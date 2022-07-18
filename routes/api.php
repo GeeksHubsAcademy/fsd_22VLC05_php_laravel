@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('/', function() {
+    return 'Bienvenido a mi app';
+});
+
 Route::get('/users', function() {
     return ['get'];
 });
