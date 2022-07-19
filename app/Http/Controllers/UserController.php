@@ -11,7 +11,7 @@ class UserController extends Controller
     {
         try {
             $users = DB::table('users')
-                ->select('title')
+                ->select('id', 'name', 'email')
                 ->get()
                 ->toArray();
     
@@ -37,5 +37,20 @@ class UserController extends Controller
     public function createUser()
     {
         return ['post'];
+    }
+
+    public function getUserById($id)
+    {
+        return $id;
+    }
+
+    public function updateUser($id)
+    {
+        return $id;
+    }
+
+    public function deleteUser($id)
+    {
+        return $id;
     }
 }
