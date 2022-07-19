@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,35 +25,9 @@ Route::get('/', function () {
     return 'Bienvenido a mi app';
 });
 
-Route::get('/users', function () {
-    try {
-        $users = DB::table('users')
-            ->select('title')
-            ->get()
-            ->toArray();
+Route::get('/users',  [UserController::class, 'getAllUsers']);
 
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'Users retrieved successfully',
-                'data' => $users
-            ],
-            200
-        );
-    } catch (\Exception $exception) {
-        return response()->json(
-            [
-                'success' => false,
-                'message' => 'Error retrieving: '.$exception->getMessage()
-            ],
-            500
-        );
-    }
-});
-
-Route::post('/users', function () {
-    return ['post'];
-});
+Route::post('/users', [UserController::class, 'createUsers']);
 
 Route::put('/users', function () {
     return ['put'];
