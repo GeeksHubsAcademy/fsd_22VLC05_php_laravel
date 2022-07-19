@@ -27,16 +27,10 @@ Route::get('/', function () {
 
 Route::get('/users',  [UserController::class, 'getAllUsers']);
 
-Route::post('/users', [UserController::class, 'createUsers']);
+Route::post('/users', [UserController::class, 'createUser']);
 
-Route::put('/users', function () {
-    return ['put'];
-});
+Route::put('/users/{id}', [UserController::class, 'updateUser']);
 
-Route::delete('/users', function () {
-    return ['delete'];
-});
+Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 
-Route::get('/users/{id}', function ($id) {
-    return $id;
-});
+Route::get('/users/{id}', [UserController::class, 'getUserById']);
