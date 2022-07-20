@@ -40,7 +40,7 @@ Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
 
 // TASKS
-Route::get('/tasks', [TaskController::class, 'getAllTasks']);
+Route::get('/tasks', [TaskController::class, 'getAllTasks'])->middleware('sergio');
 Route::post('/tasks', [TaskController::class, 'createTask']);
 Route::put('/tasks/{id}', [TaskController::class, 'updateTask']);
 Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
