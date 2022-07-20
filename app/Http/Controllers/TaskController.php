@@ -92,6 +92,22 @@ class TaskController extends Controller
     public function updateTask(Request $request, $id)
     {
         try {
+            Log::info("Updating task");
+            $validator = Validator::make($request->all(), [
+                'title' => 'string',
+                'status' => ['boolean'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => $validator->errors()
+                    ],
+                    400
+                );
+            };
+
             $task = Task::find($id);
 
             if (!$task) {
