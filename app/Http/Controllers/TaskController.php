@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+use function GuzzleHttp\Promise\task;
+
 class TaskController extends Controller
 {
     public function getAllTasks()
@@ -65,6 +67,54 @@ class TaskController extends Controller
                 [
                     'success' => false,
                     'message' => "Error creating tasks"
+                ],
+                500
+            );
+        }
+    }
+
+    public function updateTask(Request $request, $id)
+    {
+        try {
+            $task = Task::find($id);
+
+            if (!$task) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Task doesnt exists"
+                    ],
+                    404
+                );
+            }
+
+            $title = $request->input('title');
+            $status = $request->input('status'); 
+
+            if(isset($title)){
+                $task->title = $title;
+            }
+
+            if(isset($status)) {
+                $task->status = $status;
+            }        
+
+            $task->save();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Task ".$id." updated"
+                ],
+                200
+            );
+        } catch (\Exception $exception) {
+            Log::error("Error updating task: ".$exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error updating task"
                 ],
                 500
             );
