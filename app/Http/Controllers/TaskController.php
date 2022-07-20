@@ -6,6 +6,7 @@ use App\Models\Task;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\task;
 
@@ -26,7 +27,7 @@ class TaskController extends Controller
                 200
             );
         } catch (\Exception $exception) {
-            Log::error("Error getting task: ".$exception->getMessage());
+            Log::error("Error getting task: " . $exception->getMessage());
 
             return response()->json(
                 [
@@ -43,6 +44,21 @@ class TaskController extends Controller
         try {
             Log::info("Creating a task");
 
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'user_id' => ['required', 'integer'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => $validator->errors()
+                    ],
+                    400
+                );
+            };
+
             $title = $request->input('title');
             $userId = $request->input('user_id');
 
@@ -50,7 +66,7 @@ class TaskController extends Controller
             $task->title = $title;
             $task->user_id = $userId;
 
-            $task->save();           
+            $task->save();
 
 
             return response()->json(
@@ -61,7 +77,7 @@ class TaskController extends Controller
                 200
             );
         } catch (\Exception $exception) {
-            Log::error("Error creating task: ".$exception->getMessage());
+            Log::error("Error creating task: " . $exception->getMessage());
 
             return response()->json(
                 [
@@ -89,27 +105,27 @@ class TaskController extends Controller
             }
 
             $title = $request->input('title');
-            $status = $request->input('status'); 
+            $status = $request->input('status');
 
-            if(isset($title)){
+            if (isset($title)) {
                 $task->title = $title;
             }
 
-            if(isset($status)) {
+            if (isset($status)) {
                 $task->status = $status;
-            }        
+            }
 
             $task->save();
 
             return response()->json(
                 [
                     'success' => true,
-                    'message' => "Task ".$id." updated"
+                    'message' => "Task " . $id . " updated"
                 ],
                 200
             );
         } catch (\Exception $exception) {
-            Log::error("Error updating task: ".$exception->getMessage());
+            Log::error("Error updating task: " . $exception->getMessage());
 
             return response()->json(
                 [
