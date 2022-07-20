@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ Route::get('/', function () {
     return 'Bienvenido a mi app';
 });
 
+
+// USERS
 Route::get('/users',  [UserController::class, 'getAllUsers']);
 
 Route::post('/users', [UserController::class, 'createUser']);
@@ -34,3 +37,7 @@ Route::put('/users/{id}', [UserController::class, 'updateUser']);
 Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
+
+
+// TASKS
+Route::get('/tasks', [TaskController::class, 'getAllTasks']);

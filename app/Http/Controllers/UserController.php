@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,10 +11,13 @@ class UserController extends Controller
     public function getAllUsers()
     {
         try {
-            $users = DB::table('users')
-                ->select('id', 'name', 'email')
-                ->get()
-                ->toArray();
+            // Ejemplo con query builder
+            // $users = DB::table('users')
+            //     ->select('id', 'name', 'email')
+            //     ->get()
+            //     ->toArray();
+
+            $users = User::query()->get()->toArray();
     
             return response()->json(
                 [
@@ -41,6 +45,28 @@ class UserController extends Controller
 
     public function getUserById($id)
     {
+        try {
+            $user = User::find($id);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Users retrieved successfully',
+                    'data' => $user
+                ],
+                200
+            ); 
+
+        } catch (\Exception $exception) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error retrieving user: '.$exception->getMessage()
+                ],
+                500
+            );
+        }
+
         return $id;
     }
 
