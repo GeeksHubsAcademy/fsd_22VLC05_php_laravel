@@ -41,3 +41,5 @@ Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
 // TASKS
 Route::get('/tasks', [TaskController::class, 'getAllTasks']);
+Route::post('/tasks', [TaskController::class, 'createTask']);
+

@@ -35,4 +35,39 @@ class TaskController extends Controller
             );
         }
     }
+
+    public function createTask(Request $request)
+    {
+        try {
+            Log::info("Creating a task");
+
+            $title = $request->input('title');
+            $userId = $request->input('user_id');
+
+            $task = new Task();
+            $task->title = $title;
+            $task->user_id = $userId;
+
+            $task->save();           
+
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Task created"
+                ],
+                200
+            );
+        } catch (\Exception $exception) {
+            Log::error("Error creating task: ".$exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error creating tasks"
+                ],
+                500
+            );
+        }
+    }
 }
